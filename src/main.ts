@@ -94,4 +94,3 @@ const resetToDisplaySize = (renderer: THREE.WebGLRenderer) => {
   return needResize;
 };
 
-console.log(sun);
