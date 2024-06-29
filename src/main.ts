@@ -11,10 +11,10 @@ const gui = new GUI();
 
 const scene: THREE.Scene = new THREE.Scene();
 
-const pointLight: THREE.Object3D = new THREE.PointLight("0xFFFFFF", 80);
+const pointLight: THREE.PointLight = new THREE.PointLight(0xFFFFFF, 80);
 scene.add(pointLight);
 
-const camera: THREE.Camera = new THREE.PerspectiveCamera(
+const camera: THREE.PerspectiveCamera = new THREE.PerspectiveCamera(
   75,
   canvasSize.width / canvasSize.height,
   0.1,
@@ -42,14 +42,7 @@ solarSystem.add(earthOrbit);
 objects.push(earthOrbit);
 objects.push(moonOrbit);
 
-// objects.forEach((obj: THREE.Object3D) => {
-//   const axes = new THREE.AxesHelper();
-//   axes.material.depthTest = false;
-//   axes.renderOrder = 1;
-//   obj.add(axes);
-// });
-
-function makeAxisGrid(node, label, units = 10) {
+function makeAxisGrid(node: THREE.Object3D, label: string, units: number = 10): void {
   const helper = new AxisGridHelper(node, units);
   gui.add(helper, "visible").name(label);
 }
@@ -61,7 +54,7 @@ makeAxisGrid(earth, "earthMesh");
 makeAxisGrid(moonOrbit, "moonOrbit");
 makeAxisGrid(moon, "moonMesh");
 
-const renderer = new THREE.WebGLRenderer({ antiAlias: true, canvas: canvas });
+const renderer = new THREE.WebGLRenderer({ antialias: true, canvas: canvas });
 renderer.setSize(canvasSize.width, canvasSize.height);
 
 const render = (time: number) => {
@@ -80,10 +73,12 @@ const render = (time: number) => {
   renderer.render(scene, camera);
   requestAnimationFrame(render);
 };
+
 requestAnimationFrame(render);
 
-const resetToDisplaySize = (renderer: THREE.WebGLRenderer) => {
+const resetToDisplaySize = (renderer: THREE.WebGLRenderer): boolean => {
   const canvas = renderer.domElement;
+  console.log('resizing', canvas.clientWidth, canvas.clientHeight, 'Window', window.innerWidth, window.innerHeight);
   const pixelRatio = window.devicePixelRatio;
   const width = Math.floor(canvas.clientWidth * pixelRatio);
   const height = Math.floor(canvas.clientHeight * pixelRatio);
@@ -93,4 +88,3 @@ const resetToDisplaySize = (renderer: THREE.WebGLRenderer) => {
   }
   return needResize;
 };
-
