@@ -78,13 +78,19 @@ requestAnimationFrame(render);
 
 const resetToDisplaySize = (renderer: THREE.WebGLRenderer): boolean => {
   const canvas = renderer.domElement;
-  console.log('resizing', canvas.clientWidth, canvas.clientHeight, 'Window', window.innerWidth, window.innerHeight);
   const pixelRatio = window.devicePixelRatio;
   const width = Math.floor(canvas.clientWidth * pixelRatio);
   const height = Math.floor(canvas.clientHeight * pixelRatio);
   const needResize = canvas.width !== width || canvas.height !== height;
   if (needResize) {
+    console.log('resizing', canvas.width, width, 'Window', canvas.clientHeight, height);
     renderer.setSize(width, height, false);
   }
   return needResize;
 };
+window.addEventListener('resize', () => {
+  resetToDisplaySize(renderer);
+  const canvas = renderer.domElement;
+  camera.aspect = canvas.clientWidth / canvas.clientHeight;
+  camera.updateProjectionMatrix();
+});
